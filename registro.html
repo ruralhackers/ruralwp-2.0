@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Inscripciones · Rural AI Meetup Anceu</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;600;700;900&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green: #4ade80;
+      --gold: #f59e0b;
+      --bg: #060f06;
+      --text: #f0fdf0;
+      --muted: rgba(240,253,240,.5);
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Space Grotesk', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+      overflow: hidden;
+    }
+
+    .bg-grid {
+      position: fixed; inset: 0;
+      background-image:
+        linear-gradient(rgba(74,222,128,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,222,128,.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+      pointer-events: none;
+    }
+    .bg-glow {
+      position: fixed;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 600px; height: 600px;
+      background: radial-gradient(ellipse, rgba(74,222,128,.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .inner {
+      position: relative;
+      z-index: 1;
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 28px;
+      animation: fadeUp .8s ease both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(24px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .logo {
+      font-family: 'Space Mono', monospace;
+      font-size: 13px;
+      letter-spacing: .2em;
+      color: var(--green);
+      text-decoration: none;
+      opacity: .7;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 18px;
+      border: 1px solid rgba(74,222,128,.25);
+      border-radius: 999px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .12em;
+      color: var(--green);
+      text-transform: uppercase;
+    }
+    .badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--gold);
+      box-shadow: 0 0 8px var(--gold);
+      animation: pulse 2s ease-in-out infinite;
+    }
+    @keyframes pulse {
+      0%, 100% { opacity: 1; transform: scale(1); }
+      50% { opacity: .5; transform: scale(.7); }
+    }
+
+    h1 {
+      font-size: clamp(2.4rem, 8vw, 4rem);
+      font-weight: 900;
+      letter-spacing: -.04em;
+      line-height: 1.05;
+      color: var(--text);
+    }
+    h1 span { color: var(--green); }
+
+    p.desc {
+      font-size: 1.05rem;
+      color: var(--muted);
+      line-height: 1.75;
+      max-width: 440px;
+    }
+
+    .divider {
+      width: 48px;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--green), transparent);
+      opacity: .5;
+    }
+
+    .event-info {
+      display: flex;
+      gap: 32px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+    .event-info-item {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .event-info-label {
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .15em;
+      color: rgba(74,222,128,.4);
+      text-transform: uppercase;
+    }
+    .event-info-value {
+      font-size: .95rem;
+      font-weight: 600;
+      color: var(--text);
+    }
+
+    .back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 8px;
+      padding: 14px 32px;
+      border: 1px solid rgba(74,222,128,.3);
+      border-radius: 4px;
+      color: var(--green);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: .9rem;
+      font-weight: 600;
+      text-decoration: none;
+      letter-spacing: .02em;
+      transition: border-color .25s, background .25s, color .25s;
+    }
+    .back-btn:hover {
+      background: rgba(74,222,128,.08);
+      border-color: var(--green);
+    }
+  </style>
+</head>
+<body>
+  <div class="bg-grid"></div>
+  <div class="bg-glow"></div>
+
+  <div class="inner">
+    <a class="logo" href="index.html">⬡ RURAL HACKERS</a>
+
+    <div class="badge">Inscripciones cerradas por ahora</div>
+
+    <h1>Aún no hemos<br>abierto el formulario<span>.</span></h1>
+
+    <p class="desc">
+      Estamos ultimando los detalles para que todo esté perfecto.
+      Las inscripciones para el Rural AI Meetup de Rural Hackers 2026 abrirán muy pronto.
+    </p>
+
+    <div class="divider"></div>
+
+    <div class="event-info">
+      <div class="event-info-item">
+        <span class="event-info-label">Fechas</span>
+        <span class="event-info-value">17 – 21 junio 2025</span>
+      </div>
+      <div class="event-info-item">
+        <span class="event-info-label">Lugar</span>
+        <span class="event-info-value">Anceu, Galicia</span>
+      </div>
+      <div class="event-info-item">
+        <span class="event-info-label">Plazas</span>
+        <span class="event-info-value">Limitadas</span>
+      </div>
+    </div>
+
+    <a href="index.html" class="back-btn">← Volver al evento</a>
+  </div>
+</body>
+</html>

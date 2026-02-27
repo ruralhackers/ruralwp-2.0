@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
+  <rect width="32" height="32" rx="5" fill="#060f06"/>
+  <!-- base line -->
+  <rect x="5" y="21" width="22" height="2" rx="1" fill="#4ade80"/>
+  <!-- trunk -->
+  <rect x="15" y="13" width="2" height="9" fill="#4ade80"/>
+  <!-- left branch: trunk to left-lower node -->
+  <polygon points="15,16 10,19 10,17 15,14" fill="#4ade80"/>
+  <!-- right branch: trunk to right fork -->
+  <polygon points="17,14 23,10 23,12 17,16" fill="#4ade80"/>
+  <!-- left sub-branch up -->
+  <polygon points="15,14 9,8 11,8 15,14" fill="#4ade80"/>
+  <!-- right sub-branch -->
+  <polygon points="20,12 24,7 25,9 20,13" fill="#4ade80"/>
+  <!-- nodes -->
+  <circle cx="9"  cy="7"  r="2.8" fill="#4ade80"/>
+  <circle cx="10" cy="18" r="2.8" fill="#4ade80"/>
+  <circle cx="24" cy="8"  r="2.8" fill="#4ade80"/>
+  <circle cx="16" cy="12" r="2.2" fill="#4ade80"/>
+  <circle cx="21" cy="11" r="2.2" fill="#4ade80"/>
+</svg>

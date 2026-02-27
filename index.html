@@ -2,6 +2,7 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Rural AI Meetup Anceu · 17–21 junio 2025</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
@@ -70,6 +71,7 @@
       font-weight: 500;
     }
     .nav-links a:hover { color: var(--green); }
+    .nav-links a.nav-link-rh:hover { color: var(--gold); }
 
     .nav-badge {
       background: rgba(74,222,128,.12);
@@ -586,6 +588,9 @@
     .team-avatar-pixel {
       display: block;
       width: 70px;
+      height: 84px;
+      object-fit: contain;
+      object-position: bottom center;
       flex-shrink: 0;
       margin-top: 2px;
       image-rendering: pixelated;
@@ -989,6 +994,130 @@
       color: rgba(255,255,255,.55);
     }
 
+    /* ── CTA ── */
+    .cta-section {
+      position: relative;
+      overflow: hidden;
+      padding: 140px 24px;
+      text-align: center;
+      background: linear-gradient(180deg, var(--bg) 0%, #050d05 40%, #020702 100%);
+    }
+    .cta-bg-grid {
+      position: absolute; inset: 0;
+      background-image:
+        linear-gradient(rgba(74,222,128,.04) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(74,222,128,.04) 1px, transparent 1px);
+      background-size: 60px 60px;
+      mask-image: radial-gradient(ellipse 80% 80% at 50% 50%, black, transparent);
+    }
+    .cta-glow {
+      position: absolute;
+      top: 50%; left: 50%;
+      transform: translate(-50%, -50%);
+      width: 700px; height: 400px;
+      background: radial-gradient(ellipse, rgba(74,222,128,.12) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .cta-inner {
+      position: relative;
+      z-index: 1;
+      max-width: 720px;
+      margin: 0 auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 24px;
+    }
+    .cta-eyebrow {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      letter-spacing: .15em;
+      color: var(--green);
+      opacity: .7;
+      text-transform: uppercase;
+    }
+    .cta-title {
+      font-size: clamp(3.5rem, 10vw, 7rem);
+      font-weight: 900;
+      letter-spacing: -.04em;
+      line-height: 1;
+      color: var(--text);
+      margin: 0;
+    }
+    .cta-title-gradient {
+      background: linear-gradient(
+        105deg,
+        #4ade80 0%,
+        #86efac 18%,
+        #bbf7d0 36%,
+        #4ade80 50%,
+        #16a34a 64%,
+        #86efac 82%,
+        #4ade80 100%
+      );
+      background-size: 300% 100%;
+      background-position: 0% 50%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cta-sub {
+      font-size: clamp(1rem, 2vw, 1.15rem);
+      color: var(--muted);
+      max-width: 500px;
+      line-height: 1.7;
+    }
+    .cta-btn {
+      position: relative;
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      padding: 20px 48px;
+      margin-top: 8px;
+      background: var(--green);
+      color: #020702;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      letter-spacing: .02em;
+      text-decoration: none;
+      border-radius: 4px;
+      overflow: hidden;
+      transition: transform .25s ease, box-shadow .25s ease;
+      box-shadow: 0 0 30px rgba(74,222,128,.25), 0 0 60px rgba(74,222,128,.1);
+    }
+    .cta-btn:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 0 50px rgba(74,222,128,.5), 0 0 100px rgba(74,222,128,.2);
+    }
+    .cta-btn:hover .cta-btn-arrow {
+      transform: translateX(5px);
+    }
+    .cta-btn-arrow {
+      font-size: 1.2rem;
+      transition: transform .25s ease;
+    }
+    .cta-btn-shine {
+      position: absolute;
+      top: 0; left: -100%;
+      width: 60%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255,255,255,.35), transparent);
+      transform: skewX(-20deg);
+      animation: btnShine 3s ease-in-out infinite;
+    }
+    @keyframes btnShine {
+      0%, 100% { left: -100%; }
+      50% { left: 160%; }
+    }
+    .cta-note {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      letter-spacing: .1em;
+      color: rgba(74,222,128,.4);
+      text-transform: uppercase;
+    }
+
     /* ── Footer ── */
     footer {
       position: relative; z-index: 1;
@@ -1104,6 +1233,7 @@
   <div class="nav-links">
     <a href="#programa">Programa</a>
     <a href="#ponentes">Ponentes</a>
+    <a href="#equipo" class="nav-link-rh">Rural Hackers</a>
     <a href="#sobre">Sobre el evento</a>
     <a href="#lugar">Lugar</a>
   </div>
@@ -1513,11 +1643,14 @@
         <p class="team-bio">El alma de la comunidad WordPress. Lleva años tejiendo relaciones, organizando encuentros y haciendo que las personas se conozcan. Si hay comunidad, es porque hay alguien como Juan.</p>
       </div>
 
-      <div class="team-row reveal">
+      <div class="team-row team-row--centered reveal">
         <span class="team-num">04</span>
-        <div class="team-identity">
-          <a class="team-name team-name-link" href="https://www.linkedin.com/in/rodriguezafricaruralhacker/" target="_blank" rel="noopener">África Rodríguez</a>
-          <span class="team-role">Comunidad & Territorio</span>
+        <div class="team-identity team-identity--avatar">
+          <img src="africa.png" alt="África Rodríguez" class="team-avatar-pixel">
+          <div>
+            <a class="team-name team-name-link" href="https://www.linkedin.com/in/rodriguezafricaruralhacker/" target="_blank" rel="noopener">África Rodríguez</a>
+            <span class="team-role">Comunidad & Territorio</span>
+          </div>
         </div>
         <p class="team-bio">El pegamento que mantiene todo unido. África es el puente real entre Rural Hackers y el pueblo de Anceu: conoce a cada persona, entiende cada contexto y convierte una idea en algo que aterrizas donde importa. Sin ella, mucho de esto no llegaría tan lejos.</p>
       </div>
@@ -1600,6 +1733,23 @@
         <span class="wp-logo-text">WordPress<span class="wp-dot-com">.com</span></span>
       </a>
     </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="registro" class="cta-section">
+  <div class="cta-bg-grid"></div>
+  <div class="cta-glow"></div>
+  <div class="cta-inner reveal">
+    <p class="cta-eyebrow">// 17 – 21 junio · Anceu, Galicia</p>
+    <h2 class="cta-title"><span class="cta-title-gradient">¿Te apuntas?</span></h2>
+    <p class="cta-sub">Plazas limitadas. Cinco días de IA, comunidad y mucho WordPress en el corazón de Galicia.</p>
+    <a href="registro.html" target="_blank" rel="noopener" class="cta-btn">
+      <span class="cta-btn-text">Quiero apuntarme</span>
+      <span class="cta-btn-arrow">→</span>
+      <span class="cta-btn-shine"></span>
+    </a>
+    <p class="cta-note">Las inscripciones abren pronto.</p>
   </div>
 </section>
 
@@ -1744,6 +1894,23 @@ document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 document.querySelectorAll('.speaker-card, .feature-item').forEach((el, i) => {
   el.style.transitionDelay = (i * 0.08) + 's';
 });
+
+// ── "¿Te apuntas?" gradient mouse tracking ──
+(function () {
+  const el = document.querySelector('.cta-title-gradient');
+  if (!el) return;
+  let cur = 0, target = 0;
+  el.addEventListener('mouseleave', () => { target = 0; });
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    target = ((e.clientX - r.left) / r.width) * 100;
+  });
+  (function tick() {
+    requestAnimationFrame(tick);
+    cur += (target - cur) * 0.05;
+    el.style.backgroundPosition = cur + '% 50%';
+  })();
+})();
 
 // ── "Creatividad" gradient mouse tracking ──
 (function () {
