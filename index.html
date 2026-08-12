@@ -521,9 +521,26 @@
       color: var(--text);
     }
 
+    .speaker-role {
+      display: block;
+      font-size: 12px;
+      font-weight: 600;
+      color: var(--green);
+      letter-spacing: .04em;
+      margin-bottom: 10px;
+    }
+
     .speaker-topic {
       font-size: 13px; color: var(--muted);
       line-height: 1.5;
+    }
+
+    a.speaker-name-link {
+      color: inherit;
+      text-decoration: none;
+    }
+    a.speaker-name-link:hover {
+      color: var(--green);
     }
 
     .speaker-event {
@@ -1498,6 +1515,7 @@
             <div class="tl-title"><em>Meetup Pontevedra en Anceu Entreculturas</em></div>
             <div class="tl-desc">
               <strong>¿Qué viene en WordPress?</strong>
+              Charla abierta con Ana Cirujano (diseño, UX e IA en WordPress) y Pablo Moratinos (analítica, growth y WordPress.com).
               <ul>
                 <li>Ana Cirujano</li>
                 <li>Pablo Moratinos</li>
@@ -1578,21 +1596,23 @@
 
     <div class="speakers-hook reveal">
       <p class="hook-headline">La IA está redefiniendo WordPress. Y tú puedes ser de los primeros en aprovecharlo.</p>
-      <p class="hook-body">Expertos a la vanguardia del ecosistema te mostrarán las herramientas más nuevas, lo que viene y hacia dónde va la inteligencia artificial aplicada a contenido, SEO, diseño y desarrollo web.</p>
+      <p class="hook-body">Dos referentes de la comunidad WordPress en español comparten diseño, datos y producto: de la experiencia de usuario a la analítica y el crecimiento con WordPress.com.</p>
     </div>
 
     <div class="speakers-grid">
       <div class="speaker-card reveal">
         <div class="speaker-avatar"><img src="ana-cirujano.png" alt="Ana Cirujano"></div>
-        <div class="speaker-name">Ana Cirujano</div>
-        <div class="speaker-topic">Ponente del WordPress Meetup. Presentará las novedades y tendencias más relevantes del ecosistema.</div>
+        <a class="speaker-name speaker-name-link" href="https://anacirujano.com/" target="_blank" rel="noopener">Ana Cirujano</a>
+        <span class="speaker-role">Diseñadora UX/UI · WordPress &amp; IA</span>
+        <div class="speaker-topic">Diseñadora de negocio digital especializada en WordPress, WooCommerce y productos con IA. Creadora de contenido para WordPress.com, cofundadora de Ploogins y una de las voces con más charlas en la comunidad WordPress en español.</div>
         <div class="speaker-event">🌐 WordPress Meetup</div>
       </div>
 
       <div class="speaker-card reveal">
         <div class="speaker-avatar"><img src="pablo-moratinos.png" alt="Pablo Moratinos"></div>
-        <div class="speaker-name">Pablo Moratinos</div>
-        <div class="speaker-topic">Ponente del WordPress Meetup. Explorará las últimas características y el roadmap de WordPress.</div>
+        <a class="speaker-name speaker-name-link" href="https://pablomoratinos.es/" target="_blank" rel="noopener">Pablo Moratinos</a>
+        <span class="speaker-role">Analítica &amp; Growth · Embajador WordPress.com</span>
+        <div class="speaker-topic">Growth Data Lead en Product Hackers y embajador de WordPress.com. Especialista en analítica digital, SEO y data-driven marketing. Co-presenta Un Billete a Chattanooga y lleva casi 20 años en el ecosistema WordPress.</div>
         <div class="speaker-event">🌐 WordPress Meetup</div>
       </div>
     </div>
