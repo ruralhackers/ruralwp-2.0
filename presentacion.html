@@ -34,14 +34,24 @@
       --radius:    16px;
     }
 
-    html, body { height: 100%; background: var(--bg); color: var(--text); }
-    html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+    html, body {
+      height: 100%;
+      background: var(--bg);
+      color: var(--text);
+      overflow: hidden;
+    }
     body {
       font-family: 'Space Grotesk', sans-serif;
-      overflow-x: hidden;
     }
 
     ::-webkit-scrollbar { width: 0; height: 0; }
+
+    .deck {
+      height: 100dvh;
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+    }
 
     #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .4; }
 
@@ -90,14 +100,38 @@
     }
 
     .slide {
-      position: relative; z-index: 1;
-      min-height: 100vh;
-      scroll-snap-align: start;
-      scroll-snap-stop: always;
+      position: absolute;
+      inset: 0;
+      z-index: 1;
+      height: 100%;
+      width: 100%;
       display: flex;
       align-items: center;
       padding: 88px 72px 56px;
       overflow: hidden;
+      opacity: 0;
+      visibility: hidden;
+      pointer-events: none;
+      transform: translateY(28px);
+      transition:
+        opacity .55s ease,
+        transform .55s cubic-bezier(.22, 1, .36, 1),
+        visibility .55s;
+    }
+    .slide.is-active {
+      opacity: 1;
+      visibility: visible;
+      pointer-events: auto;
+      transform: translateY(0);
+      z-index: 2;
+    }
+    .slide.is-exit-up {
+      opacity: 0;
+      transform: translateY(-28px);
+    }
+    .slide.is-exit-down {
+      opacity: 0;
+      transform: translateY(28px);
     }
 
     .slide-inner {
@@ -308,10 +342,11 @@
 </nav>
 
 <div class="dots" id="dots"></div>
-<div class="hint">← →  ·  espacio</div>
+<div class="hint">← →  ·  espacio · scroll</div>
 
+<div class="deck" id="deck">
 <!-- 00 PAUSA -->
-<section class="slide slide-pause" data-label="00 · pausa" id="s0">
+<section class="slide slide-pause is-active" data-label="00 · pausa" id="s0">
   <div class="glow-orb" data-speed="-0.12" style="top:-20%; right:-10%;"></div>
   <div class="slide-inner">
     <div class="pause-logos">
@@ -455,6 +490,7 @@
     </div>
   </div>
 </section>
+</div>
 
 <script>
 (function () {
@@ -515,48 +551,90 @@
   const dots = document.getElementById('dots');
   const label = document.getElementById('slide-label');
   const progress = document.getElementById('progress');
-  slides.forEach((s, i) => {
+  let index = 0;
+  let locked = false;
+  const LOCK_MS = 700;
+
+  slides.forEach((_, i) => {
     const a = document.createElement('a');
-    a.href = '#' + s.id;
+    a.href = '#' + slides[i].id;
+    a.addEventListener('click', e => {
+      e.preventDefault();
+      go(i);
+    });
     if (i === 0) a.classList.add('active');
     dots.appendChild(a);
   });
   const dotEls = [...dots.querySelectorAll('a')];
 
-  function go(i) {
-    i = Math.max(0, Math.min(slides.length - 1, i));
-    slides[i].scrollIntoView({ behavior: 'smooth' });
+  function syncUI() {
+    label.textContent = slides[index].dataset.label;
+    progress.style.width = (index / (slides.length - 1)) * 100 + '%';
+    dotEls.forEach((d, n) => d.classList.toggle('active', n === index));
   }
-  function currentIndex() {
-    const y = window.scrollY + innerHeight * 0.35;
-    let idx = 0;
-    slides.forEach((s, i) => { if (s.offsetTop <= y) idx = i; });
-    return idx;
+
+  function go(next) {
+    next = Math.max(0, Math.min(slides.length - 1, next));
+    if (next === index || locked) return;
+    locked = true;
+
+    const prev = index;
+    const dir = next > prev ? 1 : -1;
+    const leaving = slides[prev];
+    const entering = slides[next];
+
+    leaving.classList.remove('is-active');
+    leaving.classList.add(dir > 0 ? 'is-exit-up' : 'is-exit-down');
+    entering.classList.remove('is-exit-up', 'is-exit-down');
+    entering.classList.add('is-active');
+
+    index = next;
+    syncUI();
+    history.replaceState(null, '', '#' + entering.id);
+
+    setTimeout(() => {
+      leaving.classList.remove('is-exit-up', 'is-exit-down');
+      locked = false;
+    }, LOCK_MS);
   }
-  function sync() {
-    const i = currentIndex();
-    dotEls.forEach((d, n) => d.classList.toggle('active', n === i));
-    label.textContent = slides[i].dataset.label;
-    progress.style.width = ((i) / (slides.length - 1)) * 100 + '%';
-    slides.forEach(s => {
-      const rect = s.getBoundingClientRect();
-      const p = (innerHeight / 2 - (rect.top + rect.height / 2)) / innerHeight;
-      s.querySelectorAll('[data-speed]').forEach(el => {
-        const speed = parseFloat(el.dataset.speed) || 0;
-        el.style.transform = `translate3d(0, ${p * speed * 120}px, 0)`;
-      });
-    });
+
+  syncUI();
+  const hash = location.hash.replace('#', '');
+  if (hash) {
+    const i = slides.findIndex(s => s.id === hash);
+    if (i > 0) {
+      slides[0].classList.remove('is-active');
+      slides[i].classList.add('is-active');
+      index = i;
+      syncUI();
+    }
   }
-  addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
-  addEventListener('resize', sync);
-  sync();
+
+  addEventListener('wheel', e => {
+    e.preventDefault();
+    if (locked) return;
+    if (Math.abs(e.deltaY) < 8) return;
+    go(index + (e.deltaY > 0 ? 1 : -1));
+  }, { passive: false });
+
+  let touchY = null;
+  addEventListener('touchstart', e => {
+    touchY = e.touches[0].clientY;
+  }, { passive: true });
+  addEventListener('touchend', e => {
+    if (touchY == null || locked) return;
+    const dy = touchY - e.changedTouches[0].clientY;
+    touchY = null;
+    if (Math.abs(dy) < 40) return;
+    go(index + (dy > 0 ? 1 : -1));
+  }, { passive: true });
 
   addEventListener('keydown', e => {
     if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) {
-      e.preventDefault(); go(currentIndex() + 1);
+      e.preventDefault(); go(index + 1);
     }
     if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) {
-      e.preventDefault(); go(currentIndex() - 1);
+      e.preventDefault(); go(index - 1);
     }
     if (e.key === 'Home') { e.preventDefault(); go(0); }
     if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
