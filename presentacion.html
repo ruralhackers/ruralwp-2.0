@@ -360,7 +360,26 @@
     .grid-photos-2 {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 16px;
+      gap: 14px;
+      align-items: start;
+      width: 100%;
+    }
+    .grid-photos-2 .photo-slot {
+      min-height: 0;
+      height: auto;
+      width: 100%;
+      max-width: none;
+      aspect-ratio: 3 / 4;
+      max-height: min(58vh, 500px);
+      margin-left: 0;
+      box-shadow: 0 16px 40px rgba(0,0,0,.35);
+    }
+    .grid-photos-2 .photo-slot:nth-child(2) {
+      margin-top: 36px;
+    }
+    .grid-photos-2 .photo-slot img {
+      object-fit: cover;
+      object-position: center;
     }
 
     .photo-slot {
@@ -622,8 +641,13 @@
         <li><span class="n">03</span><span>Práctica. Lo que molesta. Lo que se comparte.</span></li>
       </ul>
     </div>
-    <div class="photo-slot portrait-fit" data-speed="0.12">
-      <img src="slides-ruralgpt.jpg" alt="Rural GPT">
+    <div class="grid-photos-2">
+      <div class="photo-slot" data-speed="0.1">
+        <img src="slides-ruralgpt-1.jpg" alt="Formación Rural GPT en coworking">
+      </div>
+      <div class="photo-slot" data-speed="0.18">
+        <img src="slides-ruralgpt-2.jpg" alt="Trabajo práctico con IA">
+      </div>
     </div>
   </div>
 </section>
