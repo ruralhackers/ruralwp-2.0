@@ -286,18 +286,51 @@
       position: relative;
       min-height: 210px;
       border-radius: var(--radius);
-      border: 1px dashed rgba(74,222,128,.28);
-      background:
-        linear-gradient(180deg, rgba(74,222,128,.04), rgba(6,15,6,.2)),
-        repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(74,222,128,.03) 8px, rgba(74,222,128,.03) 16px);
+      border: 1px solid rgba(249,115,22,.22);
+      background: #0a140a;
       overflow: hidden;
       will-change: transform;
     }
-    .photo-slot.tall { min-height: 420px; }
+    .photo-slot.tall {
+      min-height: 0;
+      height: min(56vh, 480px);
+      aspect-ratio: 3 / 4;
+      width: 100%;
+      max-width: 420px;
+      margin-left: auto;
+    }
     .photo-slot img {
       width: 100%; height: 100%;
-      object-fit: cover; display: block;
+      object-fit: cover;
+      object-position: center;
+      display: block;
       position: absolute; inset: 0;
+    }
+    .photo-slot.portrait-fit {
+      min-height: 0;
+      width: min(100%, 340px);
+      height: auto;
+      aspect-ratio: 3 / 4;
+      max-height: min(58vh, 520px);
+      margin-left: auto;
+      background: #081008;
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+    }
+    .photo-slot.portrait-fit img {
+      object-fit: cover;
+      object-position: center top;
+    }
+    .photo-slot.landscape {
+      min-height: 0;
+      height: auto;
+      width: 100%;
+      aspect-ratio: 3 / 2;
+      max-height: min(48vh, 400px);
+      box-shadow: 0 20px 50px rgba(0,0,0,.35);
+    }
+    .photo-slot.landscape img {
+      object-fit: cover;
+      object-position: center 40%;
     }
     .photo-slot .hint-label {
       position: absolute; inset: 0;
@@ -495,7 +528,7 @@
         <li><span class="n">03</span><span>Práctica. Lo que molesta. Lo que se comparte.</span></li>
       </ul>
     </div>
-    <div class="photo-slot tall" data-speed="0.12">
+    <div class="photo-slot portrait-fit" data-speed="0.12">
       <img src="slides-ruralgpt.jpg" alt="Rural GPT">
     </div>
   </div>
@@ -558,7 +591,7 @@
         <div class="next-item"><b>04</b> Automattic confirma sus plazas</div>
       </div>
     </div>
-    <div class="photo-slot tall" data-speed="0.12">
+    <div class="photo-slot landscape" data-speed="0.12">
       <img src="slides-semana.jpg" alt="Semana que viene">
     </div>
   </div>
