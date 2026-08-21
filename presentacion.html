@@ -143,7 +143,7 @@
 
     .kicker {
       font-family: 'Space Mono', monospace;
-      font-size: 11px; color: var(--green);
+      font-size: 11px; color: var(--gold);
       letter-spacing: .16em; margin-bottom: 18px;
     }
     .title {
@@ -152,9 +152,25 @@
       letter-spacing: -.03em;
     }
     .title .grad {
-      background: linear-gradient(105deg, var(--green), #86efac 30%, var(--gold) 70%);
-      -webkit-background-clip: text; background-clip: text;
+      background: linear-gradient(
+        105deg,
+        #f97316 0%,
+        #fb923c 18%,
+        var(--gold) 36%,
+        #fde68a 50%,
+        #f97316 64%,
+        #fb923c 82%,
+        var(--gold) 100%
+      );
+      background-size: 300% 100%;
+      background-position: 0% 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
       -webkit-text-fill-color: transparent;
+    }
+    .title .grad-wp {
+      cursor: default;
+      display: inline-block;
     }
     .lede {
       margin-top: 22px;
@@ -164,11 +180,18 @@
       font-weight: 400;
     }
     .line {
-      max-width: 18em;
+      max-width: 20em;
       font-size: clamp(1.35rem, 2.6vw, 2.1rem);
       font-weight: 500;
       line-height: 1.25;
       margin-top: 18px;
+    }
+    .subline {
+      margin-top: 14px;
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      color: var(--muted);
+      max-width: 22em;
+      line-height: 1.4;
     }
     .cue {
       margin-top: 28px;
@@ -176,18 +199,62 @@
       font-size: 12px;
       color: rgba(107,124,107,.85);
       letter-spacing: .04em;
-      max-width: 42em;
-      line-height: 1.7;
+      max-width: 44em;
+      line-height: 1.85;
+    }
+    .cue strong {
+      color: var(--text);
+      font-weight: 700;
     }
 
-    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
     .chip {
-      border: 1px solid var(--glass-b);
-      background: var(--glass);
-      padding: 8px 16px; border-radius: 100px;
-      font-size: 13px; font-weight: 500;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      border: 1px solid rgba(249,115,22,.45);
+      background: linear-gradient(135deg, rgba(249,115,22,.16), rgba(245,158,11,.08));
+      padding: 12px 18px;
+      border-radius: 14px;
+      font-size: 14px;
+      font-weight: 600;
+      box-shadow: 0 0 0 1px rgba(249,115,22,.08), 0 10px 30px rgba(0,0,0,.25);
+      color: var(--text);
     }
-    .chip strong { color: var(--green); font-weight: 600; }
+    .chip .emoji { font-size: 16px; line-height: 1; }
+    .chip strong { color: #fb923c; font-weight: 700; }
+
+    .loading {
+      display: inline-flex;
+      align-items: center;
+      gap: 12px;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px;
+      color: var(--gold);
+      letter-spacing: .16em;
+      text-transform: uppercase;
+      margin-bottom: 22px;
+    }
+    .loading-ring {
+      width: 16px; height: 16px;
+      border-radius: 50%;
+      border: 2px solid rgba(245,158,11,.25);
+      border-top-color: var(--gold);
+      animation: spin 0.85s linear infinite;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+
+    .pause-copy {
+      margin-top: 36px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .pause-copy .lede {
+      margin-top: 16px;
+      text-align: center;
+    }
 
     .grid-2 {
       display: grid;
@@ -242,7 +309,7 @@
     }
     .points .n {
       font-family: 'Space Mono', monospace;
-      color: var(--green); font-size: 12px; padding-top: 6px;
+      color: #fb923c; font-size: 12px; padding-top: 6px;
     }
 
     /* Slide 0 */
@@ -269,15 +336,13 @@
       filter: blur(22px); pointer-events: none;
     }
     .wp-logo { width: min(38vw, 360px); height: auto; display: block; }
-    .pause-copy { margin-top: 36px; }
-    .pause-copy .kicker { justify-content: center; }
 
     .trail { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
     .trail span {
       font-family: 'Space Mono', monospace;
       font-size: 12px; letter-spacing: .08em;
       color: var(--text);
-      border-bottom: 1px solid rgba(74,222,128,.35);
+      border-bottom: 1px solid rgba(249,115,22,.4);
       padding-bottom: 4px;
     }
     .trail .sep { color: var(--muted); border: 0; }
@@ -312,7 +377,7 @@
     }
     .next-item b {
       font-family: 'Space Mono', monospace;
-      color: var(--green); font-size: 13px; min-width: 28px;
+      color: #fb923c; font-size: 13px; min-width: 28px;
     }
 
     .glow-orb {
@@ -357,8 +422,8 @@
       <img class="wp-logo" data-speed="0.1" src="wp-com.svg" alt="WordPress.com">
     </div>
     <div class="pause-copy">
-      <div class="kicker">// antes de empezar</div>
-      <h1 class="title">Rural <span class="grad">WP</span></h1>
+      <div class="loading"><span class="loading-ring" aria-hidden="true"></span>loading</div>
+      <h1 class="title">Rural <span class="grad grad-wp" id="wp-hover">WP</span></h1>
       <p class="lede">Rural Hackers × WordPress.com</p>
     </div>
   </div>
@@ -376,7 +441,10 @@
       <span>RuralWo</span><span class="sep">→</span>
       <span>Rural WP</span>
     </div>
-    <p class="cue">30 jóvenes × 5 países · webs para ONG · ellas enseñaron al volver · RuralWo: 5 mujeres, 1 mes, WordCamp Galicia + Campus Connect</p>
+    <p class="cue">
+      <strong>Curiositech &amp; Tech4rural</strong> — 30 jóvenes · 5 países · webs para ONG · al volver, formaron a más gente.<br>
+      <strong>RuralWo</strong> — 5 mujeres · 1 mes · WordCamp Galicia · Campus Connect · nuevos perfiles en la comunidad.
+    </p>
     <div class="grid-photos-3">
       <div class="photo-slot" data-speed="0.12"><span class="hint-label">FOTO 1</span><img src="foto-colab-1.jpg" alt=""></div>
       <div class="photo-slot" data-speed="0.2"><span class="hint-label">FOTO 2</span><img src="foto-colab-2.jpg" alt=""></div>
@@ -389,13 +457,13 @@
 <section class="slide" data-label="02 · Rural WP" id="s2">
   <div class="slide-inner grid-2">
     <div>
-      <div class="kicker">// 17–21 noviembre 2026 · Anceu</div>
       <h1 class="title">Devolver<br>a quien <span class="grad">ya dio</span></h1>
       <p class="line">WordPress se pone al día con la IA.</p>
       <div class="chips">
-        <span class="chip"><strong>17</strong> plazas</span>
-        <span class="chip">coliving · sinergias</span>
-        <span class="chip">nadie se queda atrás</span>
+        <span class="chip"><span class="emoji">📅</span> <strong>17–21 nov</strong> 2026</span>
+        <span class="chip"><span class="emoji">👥</span> <strong>17</strong> plazas</span>
+        <span class="chip"><span class="emoji">✨</span> sinergias</span>
+        <span class="chip"><span class="emoji">🚀</span> nadie se queda atrás</span>
       </div>
       <p class="cue">Quienes organizan meetups y dan sin pedir. Más tiempo libre. Menos tareas pesadas. Seguir haciendo lo que más les gusta.</p>
     </div>
@@ -412,6 +480,7 @@
     <div>
       <div class="kicker">// el método</div>
       <h1 class="title">Rural <span class="grad">GPT</span></h1>
+      <p class="subline">Nuestro método personalizado de IA que ya está funcionando.</p>
       <p class="line">No es un congreso.<br>Es una semana para desatascar el trabajo real.</p>
       <ul class="points">
         <li><span class="n">01</span><span>Base sólida: MCP · script · agente</span></li>
@@ -434,7 +503,7 @@
       <h1 class="title">La comunidad<br><span class="grad">real</span></h1>
       <ul class="points">
         <li><span class="n">01</span><span>Contribuidores WP · talento · curiosidad</span></li>
-        <li><span class="n">02</span><span>Formulario + entrevista corta</span></li>
+        <li><span class="n">02</span><span>Invitación + formulario + entrevista corta</span></li>
         <li><span class="n">03</span><span>Automattic: 5 plazas de libre designación</span></li>
       </ul>
     </div>
@@ -481,7 +550,7 @@
         <div class="next-item"><b>01</b> Lista de invitaciones → Automattic</div>
         <div class="next-item"><b>02</b> Draft: master plan + horario</div>
         <div class="next-item"><b>03</b> Aceptado → se actualiza en la web</div>
-        <div class="next-item"><b>04</b> Automattic confirma nombres de plazas</div>
+        <div class="next-item"><b>04</b> Automattic confirma sus plazas</div>
       </div>
     </div>
     <div class="photo-slot tall" data-speed="0.12">
@@ -639,6 +708,22 @@
     if (e.key === 'Home') { e.preventDefault(); go(0); }
     if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
   });
+})();
+
+(function () {
+  const el = document.getElementById('wp-hover');
+  if (!el) return;
+  let cur = 0, target = 0;
+  el.addEventListener('mouseleave', () => { target = 0; });
+  el.addEventListener('mousemove', e => {
+    const r = el.getBoundingClientRect();
+    target = ((e.clientX - r.left) / r.width) * 100;
+  });
+  (function tick() {
+    requestAnimationFrame(tick);
+    cur += (target - cur) * 0.05;
+    el.style.backgroundPosition = cur + '% 50%';
+  })();
 })();
 </script>
 
