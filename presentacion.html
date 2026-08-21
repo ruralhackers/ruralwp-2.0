@@ -152,6 +152,8 @@
       letter-spacing: -.03em;
     }
     .title .grad {
+      display: inline-block;
+      cursor: default;
       background: linear-gradient(
         105deg,
         #f97316 0%,
@@ -167,10 +169,7 @@
       -webkit-background-clip: text;
       background-clip: text;
       -webkit-text-fill-color: transparent;
-    }
-    .title .grad-wp {
-      cursor: default;
-      display: inline-block;
+      color: transparent;
     }
     .lede {
       margin-top: 22px;
@@ -423,7 +422,7 @@
     </div>
     <div class="pause-copy">
       <div class="loading"><span class="loading-ring" aria-hidden="true"></span>loading</div>
-      <h1 class="title">Rural <span class="grad grad-wp" id="wp-hover">WP</span></h1>
+      <h1 class="title">Rural <span class="grad" id="wp-hover">WP</span></h1>
       <p class="lede">Rural Hackers × WordPress.com</p>
     </div>
   </div>
@@ -711,19 +710,27 @@
 })();
 
 (function () {
-  const el = document.getElementById('wp-hover');
-  if (!el) return;
-  let cur = 0, target = 0;
-  el.addEventListener('mouseleave', () => { target = 0; });
-  el.addEventListener('mousemove', e => {
-    const r = el.getBoundingClientRect();
-    target = ((e.clientX - r.left) / r.width) * 100;
+  document.querySelectorAll('.title').forEach(title => {
+    const grads = [...title.querySelectorAll('.grad')];
+    if (!grads.length) return;
+
+    let cur = 0;
+    let target = 0;
+
+    title.addEventListener('mouseleave', () => { target = 0; });
+    title.addEventListener('mousemove', e => {
+      const r = title.getBoundingClientRect();
+      if (!r.width) return;
+      target = ((e.clientX - r.left) / r.width) * 100;
+    });
+
+    (function tick() {
+      requestAnimationFrame(tick);
+      cur += (target - cur) * 0.08;
+      const pos = cur.toFixed(2) + '% 50%';
+      grads.forEach(el => { el.style.backgroundPosition = pos; });
+    })();
   });
-  (function tick() {
-    requestAnimationFrame(tick);
-    cur += (target - cur) * 0.05;
-    el.style.backgroundPosition = cur + '% 50%';
-  })();
 })();
 </script>
 
