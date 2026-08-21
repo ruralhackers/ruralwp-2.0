@@ -1,0 +1,629 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex, nofollow">
+  <title>Rural WP · Rural Hackers × WordPress.com</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet" />
+  <script type="importmap">
+  {
+    "imports": {
+      "three": "https://unpkg.com/three@0.160.0/build/three.module.js",
+      "three/addons/": "https://unpkg.com/three@0.160.0/examples/jsm/"
+    }
+  }
+  </script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #060f06;
+      --bg2:       #0d1a0d;
+      --green:     #4ade80;
+      --green-dim: #22c55e;
+      --green-dark:#166534;
+      --gold:      #f59e0b;
+      --text:      #e2f0e2;
+      --muted:     #6b7c6b;
+      --glass:     rgba(74,222,128,0.06);
+      --glass-b:   rgba(74,222,128,0.18);
+      --radius:    16px;
+    }
+
+    html, body { height: 100%; background: var(--bg); color: var(--text); }
+    html { scroll-snap-type: y mandatory; scroll-behavior: smooth; }
+    body {
+      font-family: 'Space Grotesk', sans-serif;
+      overflow-x: hidden;
+    }
+
+    ::-webkit-scrollbar { width: 0; height: 0; }
+
+    #particles { position: fixed; inset: 0; z-index: 0; pointer-events: none; opacity: .4; }
+
+    .progress {
+      position: fixed; top: 0; left: 0; height: 2px; z-index: 200;
+      width: 0; background: linear-gradient(90deg, var(--green), var(--gold));
+      box-shadow: 0 0 12px rgba(74,222,128,.6);
+    }
+
+    .deck-nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 14px 28px;
+      background: rgba(6,15,6,.55);
+      backdrop-filter: blur(18px);
+      border-bottom: 1px solid rgba(74,222,128,.1);
+    }
+    .nav-logo {
+      font-family: 'Space Mono', monospace;
+      font-weight: 700; font-size: 12px;
+      color: var(--green); letter-spacing: .1em;
+      text-decoration: none;
+    }
+    .nav-meta { font-size: 11px; color: var(--muted); letter-spacing: .08em; }
+
+    .dots {
+      position: fixed; right: 18px; top: 50%; transform: translateY(-50%);
+      z-index: 120; display: flex; flex-direction: column; gap: 10px;
+    }
+    .dots a {
+      width: 8px; height: 8px; border-radius: 50%;
+      background: rgba(74,222,128,.22);
+      border: 1px solid rgba(74,222,128,.35);
+      transition: transform .2s, background .2s;
+    }
+    .dots a.active {
+      background: var(--green);
+      transform: scale(1.35);
+      box-shadow: 0 0 10px rgba(74,222,128,.7);
+    }
+
+    .hint {
+      position: fixed; bottom: 18px; left: 50%; transform: translateX(-50%);
+      z-index: 100; font-size: 10px; letter-spacing: .14em;
+      color: var(--muted); text-transform: uppercase;
+    }
+
+    .slide {
+      position: relative; z-index: 1;
+      min-height: 100vh;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+      display: flex;
+      align-items: center;
+      padding: 88px 72px 56px;
+      overflow: hidden;
+    }
+
+    .slide-inner {
+      width: 100%;
+      max-width: 1280px;
+      margin: 0 auto;
+      position: relative;
+    }
+
+    .kicker {
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; color: var(--green);
+      letter-spacing: .16em; margin-bottom: 18px;
+    }
+    .title {
+      font-size: clamp(2.4rem, 6vw, 5.2rem);
+      font-weight: 700; line-height: .95;
+      letter-spacing: -.03em;
+    }
+    .title .grad {
+      background: linear-gradient(105deg, var(--green), #86efac 30%, var(--gold) 70%);
+      -webkit-background-clip: text; background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .lede {
+      margin-top: 22px;
+      font-size: clamp(1.05rem, 2vw, 1.45rem);
+      color: var(--muted);
+      max-width: 34em;
+      font-weight: 400;
+    }
+    .line {
+      max-width: 18em;
+      font-size: clamp(1.35rem, 2.6vw, 2.1rem);
+      font-weight: 500;
+      line-height: 1.25;
+      margin-top: 18px;
+    }
+    .cue {
+      margin-top: 28px;
+      font-family: 'Space Mono', monospace;
+      font-size: 12px;
+      color: rgba(107,124,107,.85);
+      letter-spacing: .04em;
+      max-width: 42em;
+      line-height: 1.7;
+    }
+
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
+    .chip {
+      border: 1px solid var(--glass-b);
+      background: var(--glass);
+      padding: 8px 16px; border-radius: 100px;
+      font-size: 13px; font-weight: 500;
+    }
+    .chip strong { color: var(--green); font-weight: 600; }
+
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1.1fr .9fr;
+      gap: 48px;
+      align-items: center;
+    }
+    .grid-photos-3 {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+      margin-top: 36px;
+    }
+    .grid-photos-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 16px;
+    }
+
+    .photo-slot {
+      position: relative;
+      min-height: 210px;
+      border-radius: var(--radius);
+      border: 1px dashed rgba(74,222,128,.28);
+      background:
+        linear-gradient(180deg, rgba(74,222,128,.04), rgba(6,15,6,.2)),
+        repeating-linear-gradient(-45deg, transparent, transparent 8px, rgba(74,222,128,.03) 8px, rgba(74,222,128,.03) 16px);
+      overflow: hidden;
+      will-change: transform;
+    }
+    .photo-slot.tall { min-height: 420px; }
+    .photo-slot img {
+      width: 100%; height: 100%;
+      object-fit: cover; display: block;
+      position: absolute; inset: 0;
+    }
+    .photo-slot .hint-label {
+      position: absolute; inset: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'Space Mono', monospace;
+      font-size: 11px; letter-spacing: .16em;
+      color: rgba(107,124,107,.7);
+      pointer-events: none;
+    }
+    .photo-slot:has(img[src]:not([src=""])) .hint-label { display: none; }
+
+    .points { list-style: none; margin-top: 28px; display: flex; flex-direction: column; gap: 16px; }
+    .points li {
+      display: grid; grid-template-columns: 28px 1fr; gap: 12px;
+      font-size: clamp(1rem, 1.8vw, 1.25rem);
+      line-height: 1.35;
+    }
+    .points .n {
+      font-family: 'Space Mono', monospace;
+      color: var(--green); font-size: 12px; padding-top: 6px;
+    }
+
+    /* Slide 0 */
+    .slide-pause {
+      text-align: center;
+      justify-content: center;
+      flex-direction: column;
+    }
+    .pause-logos {
+      display: flex; align-items: center; justify-content: center;
+      gap: 56px; flex-wrap: wrap;
+    }
+    .hero-3d {
+      position: relative;
+      width: min(42vw, 420px);
+      height: min(42vw, 420px);
+    }
+    #logo-3d { width: 100%; height: 100%; display: block; }
+    .logo-glow {
+      position: absolute; bottom: 8%;
+      left: 50%; transform: translateX(-50%);
+      width: 55%; height: 70px;
+      background: radial-gradient(ellipse, rgba(249,115,22,.32) 0%, transparent 70%);
+      filter: blur(22px); pointer-events: none;
+    }
+    .wp-logo { width: min(38vw, 360px); height: auto; display: block; }
+    .pause-copy { margin-top: 36px; }
+    .pause-copy .kicker { justify-content: center; }
+
+    .trail { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 32px; }
+    .trail span {
+      font-family: 'Space Mono', monospace;
+      font-size: 12px; letter-spacing: .08em;
+      color: var(--text);
+      border-bottom: 1px solid rgba(74,222,128,.35);
+      padding-bottom: 4px;
+    }
+    .trail .sep { color: var(--muted); border: 0; }
+
+    .faces {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 22px;
+      margin-top: 40px;
+    }
+    .face {
+      text-align: center;
+    }
+    .face img {
+      width: 148px; height: 148px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid rgba(74,222,128,.3);
+      margin: 0 auto 14px;
+      display: block;
+    }
+    .face .name { font-weight: 700; font-size: 18px; }
+    .face .role { color: var(--muted); font-size: 13px; margin-top: 4px; }
+
+    .next {
+      display: grid; gap: 18px; margin-top: 28px;
+    }
+    .next-item {
+      display: flex; gap: 16px; align-items: baseline;
+      font-size: clamp(1.15rem, 2vw, 1.6rem);
+      font-weight: 500;
+    }
+    .next-item b {
+      font-family: 'Space Mono', monospace;
+      color: var(--green); font-size: 13px; min-width: 28px;
+    }
+
+    .glow-orb {
+      position: absolute;
+      width: 48vw; height: 48vw;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(74,222,128,.09), transparent 65%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    @media (max-width: 900px) {
+      .slide { padding: 84px 24px 48px; }
+      .grid-2, .grid-photos-3, .faces { grid-template-columns: 1fr; }
+      .dots { display: none; }
+      .hero-3d { width: 70vw; height: 70vw; }
+    }
+  </style>
+</head>
+<body>
+<canvas id="particles"></canvas>
+<div class="progress" id="progress"></div>
+
+<nav class="deck-nav">
+  <a class="nav-logo" href="index.html">⬡ RURAL HACKERS × WP.COM</a>
+  <span class="nav-meta" id="slide-label">00 · pausa</span>
+</nav>
+
+<div class="dots" id="dots"></div>
+<div class="hint">← →  ·  espacio</div>
+
+<!-- 00 PAUSA -->
+<section class="slide slide-pause" data-label="00 · pausa" id="s0">
+  <div class="glow-orb" data-speed="-0.12" style="top:-20%; right:-10%;"></div>
+  <div class="slide-inner">
+    <div class="pause-logos">
+      <div class="hero-3d" data-speed="0.18">
+        <canvas id="logo-3d"></canvas>
+        <div class="logo-glow"></div>
+      </div>
+      <img class="wp-logo" data-speed="0.1" src="wp-com.svg" alt="WordPress.com">
+    </div>
+    <div class="pause-copy">
+      <div class="kicker">// antes de empezar</div>
+      <h1 class="title">Rural <span class="grad">WP</span></h1>
+      <p class="lede">Rural Hackers × WordPress.com</p>
+    </div>
+  </div>
+</section>
+
+<!-- 01 COLABORACIÓN -->
+<section class="slide" data-label="01 · colaboración" id="s1">
+  <div class="glow-orb" data-speed="-0.08" style="bottom:-30%; left:-15%;"></div>
+  <div class="slide-inner">
+    <div class="kicker">// programas con Automattic</div>
+    <h1 class="title">Una alianza<br>que ya <span class="grad">está viva</span></h1>
+    <div class="trail">
+      <span>Curiositech</span><span class="sep">→</span>
+      <span>Tech4rural</span><span class="sep">→</span>
+      <span>RuralWo</span><span class="sep">→</span>
+      <span>Rural WP</span>
+    </div>
+    <p class="cue">30 jóvenes × 5 países · webs para ONG · ellas enseñaron al volver · RuralWo: 5 mujeres, 1 mes, WordCamp Galicia + Campus Connect</p>
+    <div class="grid-photos-3">
+      <div class="photo-slot" data-speed="0.12"><span class="hint-label">FOTO 1</span><img src="foto-colab-1.jpg" alt=""></div>
+      <div class="photo-slot" data-speed="0.2"><span class="hint-label">FOTO 2</span><img src="foto-colab-2.jpg" alt=""></div>
+      <div class="photo-slot" data-speed="0.08"><span class="hint-label">FOTO 3</span><img src="foto-colab-3.jpg" alt=""></div>
+    </div>
+  </div>
+</section>
+
+<!-- 02 RURAL WP -->
+<section class="slide" data-label="02 · Rural WP" id="s2">
+  <div class="slide-inner grid-2">
+    <div>
+      <div class="kicker">// 17–21 noviembre 2026 · Anceu</div>
+      <h1 class="title">Devolver<br>a quien <span class="grad">ya dio</span></h1>
+      <p class="line">WordPress se pone al día con la IA.</p>
+      <div class="chips">
+        <span class="chip"><strong>17</strong> plazas</span>
+        <span class="chip">coliving · sinergias</span>
+        <span class="chip">nadie se queda atrás</span>
+      </div>
+      <p class="cue">Quienes organizan meetups y dan sin pedir. Más tiempo libre. Menos tareas pesadas. Seguir haciendo lo que más les gusta.</p>
+    </div>
+    <div class="photo-slot tall" data-speed="0.16">
+      <span class="hint-label">FOTO</span>
+      <img src="foto-ruralwp.jpg" alt="">
+    </div>
+  </div>
+</section>
+
+<!-- 03 MÉTODO -->
+<section class="slide" data-label="03 · Rural GPT" id="s3">
+  <div class="slide-inner grid-2">
+    <div>
+      <div class="kicker">// el método</div>
+      <h1 class="title">Rural <span class="grad">GPT</span></h1>
+      <p class="line">No es un congreso.<br>Es una semana para desatascar el trabajo real.</p>
+      <ul class="points">
+        <li><span class="n">01</span><span>Base sólida: MCP · script · agente</span></li>
+        <li><span class="n">02</span><span>Luego, personalizado a su día a día</span></li>
+        <li><span class="n">03</span><span>Práctica. Lo que molesta. Lo que se comparte.</span></li>
+      </ul>
+    </div>
+    <div class="grid-photos-2">
+      <div class="photo-slot tall" data-speed="0.1"><span class="hint-label">FOTO 1</span><img src="foto-metodo-1.jpg" alt=""></div>
+      <div class="photo-slot tall" data-speed="0.22" style="margin-top:40px"><span class="hint-label">FOTO 2</span><img src="foto-metodo-2.jpg" alt=""></div>
+    </div>
+  </div>
+</section>
+
+<!-- 04 QUIÉN VIENE -->
+<section class="slide" data-label="04 · quién viene" id="s4">
+  <div class="slide-inner grid-2">
+    <div>
+      <div class="kicker">// selección estratégica</div>
+      <h1 class="title">La comunidad<br><span class="grad">real</span></h1>
+      <ul class="points">
+        <li><span class="n">01</span><span>Contribuidores WP · talento · curiosidad</span></li>
+        <li><span class="n">02</span><span>Formulario + entrevista corta</span></li>
+        <li><span class="n">03</span><span>Automattic: 5 plazas de libre designación</span></li>
+      </ul>
+    </div>
+    <div class="photo-slot tall" data-speed="0.14">
+      <span class="hint-label">FOTO</span>
+      <img src="foto-quien.jpg" alt="">
+    </div>
+  </div>
+</section>
+
+<!-- 05 ESCUCHAR -->
+<section class="slide" data-label="05 · escucharos" id="s5">
+  <div class="slide-inner">
+    <div class="kicker">// esta reunión</div>
+    <h1 class="title">Queremos<br><span class="grad">escucharos</span></h1>
+    <p class="lede">Tomamos nota. Encajamos vuestro talento.</p>
+    <div class="faces">
+      <div class="face" data-speed="0.08">
+        <img src="ana-cirujano.png" alt="Ana Cirujano">
+        <div class="name">Ana Cirujano</div>
+        <div class="role">Diseño · UX · IA</div>
+      </div>
+      <div class="face" data-speed="0.16">
+        <img src="pablo-moratinos.png" alt="Pablo Moratinos">
+        <div class="name">Pablo Moratinos</div>
+        <div class="role">Analítica · Growth</div>
+      </div>
+      <div class="face" data-speed="0.1">
+        <img src="jesus-amieiro.png" alt="Jesús Amieiro">
+        <div class="name">Jesús Amieiro</div>
+        <div class="role">Polyglots · i18n</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 06 PRÓXIMOS PASOS -->
+<section class="slide" data-label="06 · semana que viene" id="s6">
+  <div class="slide-inner grid-2">
+    <div>
+      <div class="kicker">// próximos pasos</div>
+      <h1 class="title">Semana<br>que <span class="grad">viene</span></h1>
+      <div class="next">
+        <div class="next-item"><b>01</b> Lista de invitaciones → Automattic</div>
+        <div class="next-item"><b>02</b> Draft: master plan + horario</div>
+        <div class="next-item"><b>03</b> Aceptado → se actualiza en la web</div>
+        <div class="next-item"><b>04</b> Automattic confirma nombres de plazas</div>
+      </div>
+    </div>
+    <div class="photo-slot tall" data-speed="0.12">
+      <span class="hint-label">FOTO</span>
+      <img src="foto-next.jpg" alt="">
+    </div>
+  </div>
+</section>
+
+<script>
+(function () {
+  document.querySelectorAll('.photo-slot img').forEach(img => {
+    img.addEventListener('error', () => img.remove());
+  });
+})();
+
+(function () {
+  const canvas = document.getElementById('particles');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+  function resize() { W = canvas.width = innerWidth; H = canvas.height = innerHeight; }
+  class Particle {
+    constructor() { this.reset(); }
+    reset() {
+      this.x = Math.random() * W; this.y = Math.random() * H;
+      this.r = Math.random() * 1.5 + .3;
+      this.vx = (Math.random() - .5) * .25; this.vy = (Math.random() - .5) * .25;
+      this.alpha = Math.random() * .45 + .1;
+    }
+    update() {
+      this.x += this.vx; this.y += this.vy;
+      if (this.x < 0 || this.x > W || this.y < 0 || this.y > H) this.reset();
+    }
+    draw() {
+      ctx.beginPath(); ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+      ctx.fillStyle = `rgba(74,222,128,${this.alpha})`; ctx.fill();
+    }
+  }
+  function loop() {
+    ctx.clearRect(0, 0, W, H);
+    for (let i = 0; i < particles.length; i++) {
+      for (let j = i + 1; j < particles.length; j++) {
+        const dx = particles[i].x - particles[j].x;
+        const dy = particles[i].y - particles[j].y;
+        const dist2 = dx * dx + dy * dy;
+        if (dist2 > 8100) continue;
+        const dist = Math.sqrt(dist2);
+        ctx.beginPath();
+        ctx.moveTo(particles[i].x, particles[i].y);
+        ctx.lineTo(particles[j].x, particles[j].y);
+        ctx.strokeStyle = `rgba(74,222,128,${(1 - dist / 100) * .08})`;
+        ctx.lineWidth = .5; ctx.stroke();
+      }
+      particles[i].update(); particles[i].draw();
+    }
+    requestAnimationFrame(loop);
+  }
+  addEventListener('resize', resize);
+  resize();
+  particles = Array.from({ length: 55 }, () => new Particle());
+  loop();
+})();
+
+(function () {
+  const slides = [...document.querySelectorAll('.slide')];
+  const dots = document.getElementById('dots');
+  const label = document.getElementById('slide-label');
+  const progress = document.getElementById('progress');
+  slides.forEach((s, i) => {
+    const a = document.createElement('a');
+    a.href = '#' + s.id;
+    if (i === 0) a.classList.add('active');
+    dots.appendChild(a);
+  });
+  const dotEls = [...dots.querySelectorAll('a')];
+
+  function go(i) {
+    i = Math.max(0, Math.min(slides.length - 1, i));
+    slides[i].scrollIntoView({ behavior: 'smooth' });
+  }
+  function currentIndex() {
+    const y = window.scrollY + innerHeight * 0.35;
+    let idx = 0;
+    slides.forEach((s, i) => { if (s.offsetTop <= y) idx = i; });
+    return idx;
+  }
+  function sync() {
+    const i = currentIndex();
+    dotEls.forEach((d, n) => d.classList.toggle('active', n === i));
+    label.textContent = slides[i].dataset.label;
+    progress.style.width = ((i) / (slides.length - 1)) * 100 + '%';
+    slides.forEach(s => {
+      const rect = s.getBoundingClientRect();
+      const p = (innerHeight / 2 - (rect.top + rect.height / 2)) / innerHeight;
+      s.querySelectorAll('[data-speed]').forEach(el => {
+        const speed = parseFloat(el.dataset.speed) || 0;
+        el.style.transform = `translate3d(0, ${p * speed * 120}px, 0)`;
+      });
+    });
+  }
+  addEventListener('scroll', () => requestAnimationFrame(sync), { passive: true });
+  addEventListener('resize', sync);
+  sync();
+
+  addEventListener('keydown', e => {
+    if (['ArrowDown', 'ArrowRight', 'PageDown', ' '].includes(e.key)) {
+      e.preventDefault(); go(currentIndex() + 1);
+    }
+    if (['ArrowUp', 'ArrowLeft', 'PageUp'].includes(e.key)) {
+      e.preventDefault(); go(currentIndex() - 1);
+    }
+    if (e.key === 'Home') { e.preventDefault(); go(0); }
+    if (e.key === 'End') { e.preventDefault(); go(slides.length - 1); }
+  });
+})();
+</script>
+
+<script type="module">
+import * as THREE from 'three';
+import { OBJLoader } from 'three/addons/loaders/OBJLoader.js';
+
+const canvas = document.getElementById('logo-3d');
+const container = canvas.parentElement;
+const renderer = new THREE.WebGLRenderer({ canvas, alpha: true, antialias: true });
+renderer.setPixelRatio(Math.min(devicePixelRatio, 2));
+renderer.setSize(container.clientWidth, container.clientHeight);
+renderer.outputColorSpace = THREE.SRGBColorSpace;
+renderer.toneMapping = THREE.ACESFilmicToneMapping;
+renderer.toneMappingExposure = 1.2;
+
+const scene = new THREE.Scene();
+const camera = new THREE.PerspectiveCamera(38, container.clientWidth / container.clientHeight, 0.1, 100);
+camera.position.set(0, 0, 5);
+scene.add(new THREE.AmbientLight(0xffffff, 0.5));
+const keyLight = new THREE.DirectionalLight(0xfff0e8, 2.2);
+keyLight.position.set(4, 6, 5); scene.add(keyLight);
+const fillLight = new THREE.DirectionalLight(0xffcf8f, 0.8);
+fillLight.position.set(-4, 0, 3); scene.add(fillLight);
+const rimLight = new THREE.DirectionalLight(0xff6a1a, 1.4);
+rimLight.position.set(-3, -3, -4); scene.add(rimLight);
+const pointLight = new THREE.PointLight(0xf97316, 3.5, 14);
+pointLight.position.set(0, 1, 4); scene.add(pointLight);
+
+const material = new THREE.MeshStandardMaterial({
+  color: 0xf97316, emissive: 0xf97316, emissiveIntensity: 0.14,
+  metalness: 0.3, roughness: 0.4,
+});
+
+let model = null;
+new OBJLoader().load('./ruralhackers.obj', (obj) => {
+  obj.traverse(child => {
+    if (child.isMesh) {
+      child.material = material;
+      child.geometry.computeVertexNormals();
+    }
+  });
+  const box = new THREE.Box3().setFromObject(obj);
+  const size = box.getSize(new THREE.Vector3());
+  const center = box.getCenter(new THREE.Vector3());
+  const scale = 2.0 / Math.max(size.x, size.y, size.z);
+  obj.scale.setScalar(scale);
+  obj.position.set(-center.x * scale, -center.y * scale, -center.z * scale);
+  model = obj; scene.add(model);
+});
+
+let autoRot = 0;
+function animate() {
+  requestAnimationFrame(animate);
+  if (model) { autoRot += 0.005; model.rotation.y = autoRot; }
+  renderer.render(scene, camera);
+}
+animate();
+new ResizeObserver(() => {
+  const w = container.clientWidth, h = container.clientHeight;
+  camera.aspect = w / h; camera.updateProjectionMatrix();
+  renderer.setSize(w, h);
+}).observe(container);
+</script>
+</body>
+</html>
