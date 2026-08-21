@@ -192,6 +192,11 @@
       max-width: 22em;
       line-height: 1.4;
     }
+    .line.method {
+      margin-top: 16px;
+      color: var(--text);
+      max-width: 22em;
+    }
     .cue {
       margin-top: 28px;
       font-family: 'Space Mono', monospace;
@@ -204,6 +209,78 @@
     .cue strong {
       color: var(--text);
       font-weight: 700;
+    }
+
+    .slide-stack {
+      display: flex;
+      flex-direction: column;
+      gap: 28px;
+      width: 100%;
+    }
+    .punch {
+      position: relative;
+      margin: 0;
+      padding: 22px 28px 22px 32px;
+      border-radius: 16px;
+      border: 1px solid rgba(249,115,22,.35);
+      background:
+        linear-gradient(135deg, rgba(249,115,22,.14), rgba(245,158,11,.04) 55%, transparent);
+      box-shadow: 0 0 0 1px rgba(249,115,22,.08);
+      cursor: default;
+      transition:
+        transform .35s cubic-bezier(.22, 1, .36, 1),
+        border-color .35s,
+        box-shadow .35s,
+        background .35s;
+    }
+    .punch::before {
+      content: '';
+      position: absolute;
+      left: 0; top: 14px; bottom: 14px;
+      width: 3px;
+      border-radius: 3px;
+      background: linear-gradient(180deg, #f97316, var(--gold));
+      box-shadow: 0 0 16px rgba(249,115,22,.55);
+    }
+    .punch p {
+      margin: 0;
+      font-size: clamp(1.25rem, 2.4vw, 1.85rem);
+      font-weight: 600;
+      line-height: 1.3;
+      letter-spacing: -.02em;
+      color: var(--text);
+    }
+    .punch em {
+      font-style: normal;
+      background: linear-gradient(105deg, #f97316, #fde68a 50%, #fb923c);
+      background-size: 200% 100%;
+      background-position: 0% 50%;
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      transition: background-position .45s ease;
+    }
+    .punch:hover {
+      transform: translateY(-4px) scale(1.01);
+      border-color: rgba(249,115,22,.7);
+      box-shadow:
+        0 0 0 1px rgba(249,115,22,.2),
+        0 18px 50px rgba(249,115,22,.18),
+        0 0 40px rgba(245,158,11,.12);
+      background:
+        linear-gradient(135deg, rgba(249,115,22,.22), rgba(245,158,11,.08) 55%, transparent);
+    }
+    .punch:hover em {
+      background-position: 100% 50%;
+    }
+    .punch-label {
+      display: block;
+      font-family: 'Space Mono', monospace;
+      font-size: 10px;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: #fb923c;
+      margin-bottom: 8px;
     }
 
     .chips { display: flex; flex-wrap: wrap; gap: 12px; margin-top: 28px; }
@@ -508,21 +585,27 @@
 
 <!-- 02 RURAL WP -->
 <section class="slide" data-label="02 · Rural WP" id="s2">
-  <div class="slide-inner grid-2 photo-wide">
-    <div>
-      <h1 class="title">Devolver<br>a quien <span class="grad">ya dio</span></h1>
-      <p class="line">WordPress se pone al día con la IA.</p>
-      <div class="chips">
-        <span class="chip"><span class="emoji">📅</span> <strong>17–21 nov</strong> 2026</span>
-        <span class="chip"><span class="emoji">👥</span> <strong>17</strong> plazas</span>
-        <span class="chip"><span class="emoji">✨</span> sinergias</span>
-        <span class="chip"><span class="emoji">🚀</span> nadie se queda atrás</span>
+  <div class="slide-inner slide-stack">
+    <div class="grid-2 photo-wide">
+      <div>
+        <h1 class="title">Devolver<br>a quien <span class="grad">ya dio</span></h1>
+        <p class="line">WordPress se pone al día con la IA.</p>
+        <div class="chips">
+          <span class="chip"><span class="emoji">📅</span> <strong>17–21 nov</strong> 2026</span>
+          <span class="chip"><span class="emoji">👥</span> <strong>17</strong> plazas</span>
+          <span class="chip"><span class="emoji">✨</span> sinergias</span>
+          <span class="chip"><span class="emoji">🚀</span> nadie se queda atrás</span>
+        </div>
+        <p class="cue">Quienes organizan meetups y dan sin pedir. Más tiempo libre. Menos tareas pesadas. Seguir haciendo lo que más les gusta.</p>
       </div>
-      <p class="cue">Quienes organizan meetups y dan sin pedir. Más tiempo libre. Menos tareas pesadas. Seguir haciendo lo que más les gusta.</p>
+      <div class="photo-slot landscape wide" data-speed="0.16">
+        <img src="slides-devolver.jpg" alt="Devolver a quien ya dio">
+      </div>
     </div>
-    <div class="photo-slot landscape wide" data-speed="0.16">
-      <img src="slides-devolver.jpg" alt="Devolver a quien ya dio">
-    </div>
+    <blockquote class="punch">
+      <span class="punch-label">// la idea</span>
+      <p>No es un congreso.<br><em>Es una semana para desatascar el trabajo real.</em></p>
+    </blockquote>
   </div>
 </section>
 
@@ -532,8 +615,7 @@
     <div>
       <div class="kicker">// el método</div>
       <h1 class="title">Rural <span class="grad">GPT</span></h1>
-      <p class="subline">Nuestro método personalizado de IA que ya está funcionando.</p>
-      <p class="line">No es un congreso.<br>Es una semana para desatascar el trabajo real.</p>
+      <p class="line method">Nuestro método personalizado de IA que ya está funcionando.</p>
       <ul class="points">
         <li><span class="n">01</span><span>Base sólida: MCP · script · agente</span></li>
         <li><span class="n">02</span><span>Luego, personalizado a su día a día</span></li>
